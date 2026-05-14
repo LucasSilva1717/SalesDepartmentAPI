@@ -1,32 +1,28 @@
 # 🏦 SalesDepartmentAPI BACK-END - Java & JDBC
 
-[![Java](https://shields.io)](https://oracle.com)
-[![PostgreSQL](https://shields.io)](https://postgresql.org)
-[![Maven](https://shields.io)](https://apache.org)
-
-Este projeto demonstra a implementação de um sistema robusto de transações financeiras utilizando **Java SE** e **JDBC Core**. O objetivo principal é garantir a consistência de dados em operações críticas por meio do controle manual do ciclo de vida das transações.
+This project demonstrates the implementation of a robust financial transaction system using **Java SE** and **JDBC Core**. The primary objective is to ensure data consistency in critical operations through manual control of the transaction lifecycle.
 
 ---
 
-## 🎯 Recursos Computacionais
+## 🎯 Computational Features
 
-### 1. Integridade Transacional (ACID)
-*   **Controle Manual:** Uso de `setAutoCommit(false)` para agrupar operações interdependentes.
-*   **Resiliência:** Execução de `commit()` apenas após o sucesso total de todas as etapas da operação.
-*   **Rollback Automático:** Desfazimento imediato de alterações pendentes em caso de qualquer `SQLException`.
+### 1. Transactional Integrity (ACID)
+* **Manual Control:** Use of `setAutoCommit(false)` to group interdependent operations.
+* **Resilience:** Execution of `commit()` only after the total success of all operational stages.
+* **Automatic Rollback:** Immediate reversal of pending changes in case of any `SQLException`.
 
-### 2. Segurança e Eficiência no JDBC Core
-*   **Proteção SQLi:** Uso estrito de `PreparedStatement` para sanitizar entradas e evitar ataques de injeção de SQL.
-*   **Resource Management:** Tratamento seguro de fechamento de conexões com blocos `try-with-resources`.
+### 2. Security and Efficiency in JDBC Core
+* **SQLi Protection:** Strict use of `PreparedStatement` to sanitize inputs and prevent SQL injection attacks.
+* **Resource Management:** Safe handling of connection closures using `try-with-resources` blocks.
 
-### 3. Rastreabilidade
-*   **Histórico:** Registro estruturado de logs de sucesso e falha das operações financeiras diretamente no terminal.
+### 3. Traceability
+* **History:** Structured logging of success and failure for financial operations directly to the terminal.
 
 ---
 
-## 📐 Arquitetura do Banco de Dados
+## 📐 Database Architecture
 
-O banco de dados utiliza regras de integridade diretamente no motor do **PostgreSQL**:
+The database enforces integrity rules directly within the **PostgreSQL** engine:
 
 ```sql
 CREATE TABLE accounts (
@@ -46,56 +42,57 @@ CREATE TABLE transaction_logs (
 
 ---
 
-## 💻 Fluxo Lógico da Transação
+## 💻 Transaction Logical Flow
 
-O diagrama abaixo ilustra o comportamento do sistema durante uma transferência bancária:
+The diagram below illustrates the system behavior during a bank transfer:
 
 ```mermaid
 graph TD
-    A[Início da Transferência] --> B[setAutoCommit false]
-    B --> C[Debitar Conta Origem]
-    C -->|Sucesso| D[Creditar Conta Destino]
-    C -->|Falha| G[Executar Rollback]
-    D -->|Sucesso| E[Gravar Log da Operação]
-    D -->|Falha| G
-    E -->|Sucesso| F[Executar Commit]
-    E -->|Falha| G
-    G --> H[Fim do Processo]
-    F --> H
+A[Transfer Start] --> B[setAutoCommit false]
+B --> C[Debit Source Account]
+C -->|Success| D[Credit Destination Account]
+C -->|Failure| G[Execute Rollback]
+D -->|Success| E[Record Operation Log]
+D -->|Failure| G
+E -->|Success| F[Execute Commit]
+E -->|Failure| G
+G --> H[End of Process]
+F --> H
 ```
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 How to Run the Project
 
-### 1. Clonar o Repositório
+### 1. Clone the Repository
 ```bash
 git clone github.com
-cd nome-do-repositorio
+cd repository-name
 ```
 
-### 2. Configurar o Banco de Dados
-Acesse o arquivo de configuração de conexão (ex: `DB.java`) e insira suas credenciais locais do PostgreSQL:
+### 2. Configure the Database
+Access the connection configuration file (e.g., `DB.java`) and insert your local PostgreSQL credentials:
 ```java
-private static final String URL = "jdbc:postgresql://localhost:5432/seu_banco";
-private static final String USER = "seu_usuario";
-private static final String PASS = "sua_senha";
+private static final String URL = "jdbc:postgresql://localhost:5432/your_database";
+private static final String USER = "your_username";
+private static final String PASS = "your_password";
 ```
 
-### 3. Compilar e Rodar
-Execute a aplicação via terminal utilizando o Maven:
+### 3. Compile and Run
+Run the application via terminal using Maven:
 ```bash
-mvn compile exec:java -Dexec.mainClass="seu.pacote.Main"
+mvn compile exec:java -Dexec.mainClass="your.package.Main"
 ```
 
 ---
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Ideias para evolução do repositório:
-*   Implementação de diferentes níveis de isolamento (`Connection.TRANSACTION_SERIALIZABLE`).
-*   Migração do script SQL para versionamento automatizado com **Flyway**.
-*   Criação de testes unitários para cenários de concorrência com **JUnit**.
+Ideas for the evolution of this repository:
+* Implementation of different isolation levels (`Connection.TRANSACTION_SERIALIZABLE`).
+* Migration of the SQL script to automated versioning with **Flyway**.
+* Creation of unit tests for concurrency scenarios with **JUnit**.
 
 ---
-Desenvolvido com ☕ por [Lucas Silva](https://github.com)
+
+Developed with ☕ by [Lucas Silva](https://github.com)
